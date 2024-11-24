@@ -1,8 +1,8 @@
 import eslint from "@eslint/js";
-import eslint from "@typescript-eslint/eslint-plugin";
+import tseslint from "@typescript-eslint/eslint-plugin";
 
 export default {
-  root: true,
+   root: true,
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   extends: [

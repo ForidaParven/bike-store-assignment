@@ -4,16 +4,13 @@ import { BikeStoreController } from './bikeStore.controller';
 const router = express.Router();
 
 // products routes
-router.post("/create-bike",BikeStoreController.createBike.bind(BikeStoreController));
-router.get("/", BikeStoreController.getAllBikes.bind(BikeStoreController));
-router.get("/:productId", BikeStoreController.getBikeByID.bind(BikeStoreController));
-router.put("/:productId", BikeStoreController.updateBike.bind(BikeStoreController));
-router.delete("/:productId", BikeStoreController.deleteBike.bind(BikeStoreController));
+router.get('/revenue', BikeStoreController.calculateRevenue);
+router.post('/create-bike', BikeStoreController.createBike);
+router.get('/', BikeStoreController.getAllBikes);
+router.post('/', BikeStoreController.orderBike);
 
-
-// order routes
-router.post("/orders", BikeStoreController.orderBike.bind(BikeStoreController));
-router.delete("/orders/revenue", BikeStoreController.calculateRevenue.bind(BikeStoreController));
-
+router.get('/:productId', BikeStoreController.getBikeByID);
+router.put('/:productId', BikeStoreController.updateBike);
+router.delete('/:productId', BikeStoreController.deleteBike);
 
 export const bikeStoreRoutes = router;

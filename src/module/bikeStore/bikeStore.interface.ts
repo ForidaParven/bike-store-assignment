@@ -12,10 +12,10 @@ interface IBike {
 }
 
 interface IOrder {
-  email: string; 
-  product: mongoose.Types.ObjectId; 
-  quantity: number; 
-  totalPrice: number; 
+  email: string;
+  product: mongoose.Types.ObjectId;
+  quantity: number;
+  totalPrice: number;
 }
 
-export { IBike, IOrder }; 
+export { IBike, IOrder };

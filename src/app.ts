@@ -1,7 +1,6 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response} from 'express';
 import cors from 'cors';
 import { bikeStoreRoutes } from './module/bikeStore/bikeStore.route';
-// import errorHandler from './middleWare/errHandler';
 
 const app = express();
 
@@ -11,8 +10,10 @@ app.use(cors());
 
 // Routes
 app.use('/api/products', bikeStoreRoutes);
-// app.use('/api', bikeStoreRoutes);
 app.use('/api/orders', bikeStoreRoutes);
-// app.use(errorHandler);
+
+app.get('/', (req: Request, res:Response) => {
+    res.send('Hello bike Store World!')
+  })
 
 export default app;

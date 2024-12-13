@@ -1,23 +1,48 @@
 import { Request, Response, NextFunction } from 'express';
+import { BikeValidationSchema } from './bikeStore.validation';
 import { BikeStoreService } from './bikeStore.service';
+import IBike from './bikeStore.interface';
+import { orderStoreService } from '../orderStore/orderStore.service';
 
 const createBike = async (req: Request, res: Response): Promise<void> => {
   try {
-    const bike = await BikeStoreService.createBike(req.body);
+
+    const bikeData = req.body;
+    const zodParsedData = BikeValidationSchema.parse(bikeData);
+ console.log(zodParsedData)
+   const bike = await BikeStoreService.createBike(zodParsedData as IBike);
+
+   const price = -5; 
+   if (price < 0) {
+       const error = new Error("Price must be a positive number");
+       error.name = "ValidationError";
+      }
+    
     res
       .status(201)
       .json({
         message: 'Bike created successfully',
         success: true,
-        data: bike,
+       data: bike,
       });
-  } catch (err) {
-    res.status(400).json({
-      message: 'Failed to create bike',
+  } 
+  
+  catch (err: any) {
+    const errorResponse = {
+      message: "Validation failed",
       success: false,
-      error: err instanceof Error ? err.message : 'An unknown error occurred',
-    });
-  }
+      error: err instanceof Error ? { 
+        name: err.name, 
+         message: err.message, 
+        ...(err.name === 'ValidationError' && { errors: (err as any).errors })
+      } : 'An unknown error occurred',
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+      
+    };
+
+    res.status(400).json(errorResponse);
+   }
+
 };
 
 const getAllBikes = async (req: Request, res: Response): Promise<void> => {
@@ -102,7 +127,7 @@ const deleteBike = async (req: Request, res: Response): Promise<void> => {
 
 const orderBike = async (req: Request, res: Response): Promise<void> => {
   try {
-    const order = await BikeStoreService.orderBike(req.body);
+    const order = await orderStoreService.orderBike(req.body);
     res
       .status(201)
       .json({
@@ -111,7 +136,7 @@ const orderBike = async (req: Request, res: Response): Promise<void> => {
         data: order,
       });
   } catch (err) {
-    res.status(500).json({
+    res.status(404).json({
       message: 'Failed to retrieve bikes',
       success: false,
       error: err instanceof Error ? err.message : 'An unknown error occurred',
@@ -121,7 +146,7 @@ const orderBike = async (req: Request, res: Response): Promise<void> => {
 
 const calculateRevenue = async (req: Request, res: Response): Promise<void> => {
   try {
-    const totalRevenue = await BikeStoreService.calculateRevenue();
+    const totalRevenue = await orderStoreService.calculateRevenue();
     res.status(200).json({
       message: 'Revenue calculated successfully',
       success: true,

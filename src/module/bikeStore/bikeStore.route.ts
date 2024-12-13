@@ -3,12 +3,10 @@ import { BikeStoreController } from './bikeStore.controller';
 
 const router = express.Router();
 
-// products routes
-router.get('/revenue', BikeStoreController.calculateRevenue);
-router.post('/create-bike', BikeStoreController.createBike);
-router.get('/', BikeStoreController.getAllBikes);
-router.post('/', BikeStoreController.orderBike);
 
+// products routes
+router.post('/', BikeStoreController.createBike);
+router.get('/', BikeStoreController.getAllBikes);
 router.get('/:productId', BikeStoreController.getBikeByID);
 router.put('/:productId', BikeStoreController.updateBike);
 router.delete('/:productId', BikeStoreController.deleteBike);

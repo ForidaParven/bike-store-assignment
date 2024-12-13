@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { Document } from "mongoose";
+
 
 // Define the Product (Bike) interface for TypeScript
 interface IBike extends Document {
@@ -7,15 +9,8 @@ interface IBike extends Document {
   price: number;
   category: 'Mountain' | 'Road' | 'Hybrid' | 'Electric';
   description: string;
-  quantity: number;
+  quantity: number; 
   inStock: boolean;
 }
 
-interface IOrder extends Document {
-  email: string;
-  product: mongoose.Types.ObjectId;
-  quantity: number;
-  totalPrice: number;
-}
-
-export { IBike, IOrder };
+export default IBike;
